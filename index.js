@@ -53,9 +53,7 @@ app.post("/sendEmail", jsonParser, (req, res) => {
     text: msg,
     attachments: [
       {
-        path: fs.readFile("demo",path, function (err, data) {
-          console.log(data);
-        }),
+        path: "./img.jpg"
       },
     ],
   };
