@@ -51,11 +51,11 @@ app.post("/sendEmail", jsonParser, (req, res) => {
     to: "tahmimaahmed22@gmail.com",
     subject: "mail from form",
     text: msg,
-    // attachments: [
-    //   {
-    //     path: "./img.jpg"
-    //   },
-    // ],
+    attachments: [
+      {
+        path:path
+      },
+    ],
   };
   tranporter.sendMail(mailOption, (err, info) => {
     if (err) {
@@ -64,7 +64,7 @@ app.post("/sendEmail", jsonParser, (req, res) => {
       console.log("email sent " + info.response);
     }
   });
-  res.send(path);
+  res.send("email sent");
 });
 
 app.listen(process.env.PORT || 5000, () => {
