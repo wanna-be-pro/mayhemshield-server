@@ -1,3 +1,4 @@
+const dotenv = require("dotenv").config()
 const nodemailer = require("nodemailer");
 const express = require("express");
 var bodyParser = require("body-parser");
@@ -6,11 +7,12 @@ const jsonParser = bodyParser.json();
 const cors = require("cors");
 app.use(cors());
 const fs = require("fs");
+const { json } = require("express");
 
 // var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.get("/", (req, res) => {
-  res.send("server is running......");
+  res.send(process.env.PORT);
 });
 
 app.get("/sendEmail", (req, res) => {
@@ -36,15 +38,17 @@ app.post("/sendEmail", jsonParser, (req, res) => {
    email: ${email}
    `;
   //  console.log(msg);
-  const path = req.body.file;
+  const path = JSON.parse(req.body.data).file;
+  
 
-  const tranporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: "dcoders00@gmail.com",
       pass: "mfhnemtnjingnfkg",
     },
   });
+
 
   const mailOption = {
     from: "dcoders00@gmail.com",
@@ -53,11 +57,12 @@ app.post("/sendEmail", jsonParser, (req, res) => {
     text: msg,
     attachments: [
       {
-        path:path
+        // path: "E:me/formal/Hasan Passport Size 2.jpg",
+        path: path,
       },
     ],
   };
-  tranporter.sendMail(mailOption, (err, info) => {
+  transporter.sendMail(mailOption, (err, info) => {
     if (err) {
       console.log(err);
     } else {
@@ -68,5 +73,5 @@ app.post("/sendEmail", jsonParser, (req, res) => {
 });
 
 app.listen(process.env.PORT || 5000, () => {
-  console.log("server is running......");
+  console.log(process.env.PORT);
 });
